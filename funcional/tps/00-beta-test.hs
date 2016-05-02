@@ -22,6 +22,23 @@ mayorSegun f a b 	| f a >= f b = a
 -- parHabilidad es una tupla habilidad que se compone por fuerza y precision (fuerza,precision).
 putter parHabilidad = (10,(snd parHabilidad)*2,0)
 madera parHabilidad = (100,(snd parHabilidad)*2,5)
-hierro n parHabilidad = ((*n) (fst parHabilidad),(/n) (snd parHabilidad),n^2)
+hierro n parHabilidad = ((fst parHabilidad) * n, quot (snd parHabilidad) n, n^2) -- Utilizo quot para que devuelva (Int, Int, Int)
 -- Funcion pre-definida
 palos = putter : madera : map hierro [1 .. 10]
+
+-- Punto 2
+--- Obtener el tiro con jugador y palo.
+golpe jugador palo = palo (habilidad jugador)
+
+--- Averiguo si puedo superar un obstaculo recibiendo un tiro
+puedeSuperar obstaculo tuplaTiro = fst obstaculo tuplaTiro
+
+--- Defino los palos utiles
+palosUtiles jugador obstaculo = filter (puedeSuperar obstaculo) (map (golpe jugador) palos)
+
+-- Obtengo las personas que pueden superar todos los obstaculos de una lista
+--- Voy a usar una función auxiliar para evaluar que la lista de palosUtiles no contenga la lista vacia. Si devuelve True, entonces puede con todos los obstaculos.
+puedeSuperarTodosLosObstaculos listaObstaculos jugador | not (elem [] (map (palosUtiles jugador) listaObstaculos)) = nombre jugador
+													   | otherwise = []
+
+nombreDeLosQuePuedenSuperarTodos listaObstaculos listaJugadores = map (puedeSuperarTodosLosObstaculos listaObstaculos) listaJugadores
