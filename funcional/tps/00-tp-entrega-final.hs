@@ -28,19 +28,19 @@ palos = putter : madera : map hierro [1 .. 10]
 
 -- Punto 2
 --- Obtener el tiro con jugador y palo.
-golpe jugador palo = (palo.habilidad) jugador
+golpe jugador palo = palo (habilidad jugador)
 
 --- Averiguo si puedo superar un obstaculo recibiendo un tiro
 puedeSuperar obstaculo tuplaTiro = fst obstaculo tuplaTiro
 
 --- Defino los palos utiles
-palosUtiles jugador obstaculo = (filter (puedeSuperar obstaculo).map (golpe jugador)) palos
+palosUtiles jugador obstaculo = filter (puedeSuperar obstaculo) (map (golpe jugador) palos)
 
 -- Obtengo las personas que pueden superar todos los obstaculos de una lista
 --- Voy a usar una función auxiliar para evaluar que la lista de palosUtiles no contenga la lista vacia. Si devuelve True, entonces puede con todos los obstaculos.
 puedeSuperarTodosLosObstaculos listaObstaculos jugador = (not.elem [].map (palosUtiles jugador)) listaObstaculos
 
-nombreDeLosQuePuedenSuperarTodos listaObstaculos listaJugadores = (map nombre.filter (puedeSuperarTodosLosObstaculos listaObstaculos)) listaJugadores
+nombreDeLosQuePuedenSuperarTodos listaObstaculos listaJugadores = [ nombre jugador | jugador <- listaJugadores, puedeSuperarTodosLosObstaculos listaObstaculos jugador ]
 
 -- Punto 3
 --- Saber cuantos obstaculos puede superar. Solo devuelve un Int con el valor de cantidad de obstaculos
