@@ -44,4 +44,17 @@ nombreDeLosQuePuedenSuperarTodos listaObstaculos listaJugadores = (map nombre.fi
 
 -- Punto 3
 --- Saber cuantos obstaculos puede superar. Solo devuelve un Int con el valor de cantidad de obstaculos
-cuantosObstaculosSupera tiro (obstaculoHead:obstaculoTail) = 0
+sumadorDeObstaculos tiro [] = []
+sumadorDeObstaculos tiro ((esTiroValido,efectoDeTiro):obstaculoTail) 	| esTiroValido tiro = [efectoDeTiro tiro]:(sumadorDeObstaculos (efectoDeTiro tiro) obstaculoTail)
+																		| otherwise = []
+ 
+cuantosObstaculosSupera tiro listaObstaculos = length (sumadorDeObstaculos tiro listaObstaculos)
+
+--- Determinar cual es el palo que permite superar mas obstaculos.
+--- Recordamos del punto 2 que no se puede mostrar el nombre del palo, pero mostramos la tupla de tiro que genera.
+paloMasUtil jugador listaObstaculos = snd(maximum(mapeoDeTuplas jugador listaObstaculos))
+formarTuplaPalos jugador listaObstaculos palo = ((cuantosObstaculosSupera (golpe jugador palo) listaObstaculos),(golpe jugador palo))
+mapeoDeTuplas jugador listaObstaculos = map (formarTuplaPalos jugador listaObstaculos) palos
+
+-- Punto 4
+--- Devolver puntos ganados por tipo de tiro.

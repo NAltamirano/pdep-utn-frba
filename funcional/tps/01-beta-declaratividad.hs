@@ -44,4 +44,8 @@ nombreDeLosQuePuedenSuperarTodos listaObstaculos listaJugadores = (map nombre.fi
 
 -- Punto 3
 --- Saber cuantos obstaculos puede superar. Solo devuelve un Int con el valor de cantidad de obstaculos
-cuantosObstaculosSupera tiro (obstaculoHead:obstaculoTail) = 0
+sumadorDeObstaculos tiro [] = []
+sumadorDeObstaculos tiro ((esTiroValido,efectoDeTiro):obstaculoTail) 	| esTiroValido tiro = [efectoDeTiro tiro]:(sumadorDeObstaculos (efectoDeTiro tiro) obstaculoTail)
+																		| otherwise = []
+
+cuantosObstaculosSupera tiro listaObstaculos = length (sumadorDeObstaculos tiro listaObstaculos)
