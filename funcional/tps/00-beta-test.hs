@@ -45,7 +45,7 @@ nombreDeLosQuePuedenSuperarTodos listaObstaculos listaJugadores = (map nombre.fi
 -- Punto 3
 --- Saber cuantos obstaculos puede superar. Solo devuelve un Int con el valor de cantidad de obstaculos
 sumadorDeObstaculos tiro [] = []
-sumadorDeObstaculos tiro ((esTiroValido,efectoDeTiro):obstaculoTail) 	| esTiroValido tiro = [efectoDeTiro tiro]:(sumadorDeObstaculos (efectoDeTiro tiro) obstaculoTail)
+sumadorDeObstaculos tiro ((esTiroValido,efectoDeTiro):obstaculoTail) 	| esTiroValido tiro = (efectoDeTiro tiro):(sumadorDeObstaculos (efectoDeTiro tiro) obstaculoTail)
 																		| otherwise = []
  
 cuantosObstaculosSupera tiro listaObstaculos = length (sumadorDeObstaculos tiro listaObstaculos)
@@ -58,3 +58,38 @@ mapeoDeTuplas jugador listaObstaculos = map (formarTuplaPalos jugador listaObsta
 
 -- Punto 4
 --- Devolver puntos ganados por tipo de tiro.
+dificultadDeLaguna obstaculo tiro listaLargo = [ snd obstaculo tiro == snd (laguna largo) tiro | largo <- listaLargo ]
+
+nivelDeDificultad obstaculo tiro 	| snd obstaculo tiro == (0,0,0) || elem True (dificultadDeLaguna obstaculo tiro [1..5]) = "facil"
+									| snd obstaculo tiro == snd tunelConRampita tiro || elem True (dificultadDeLaguna obstaculo tiro [6..10]) = "medio"
+									| otherwise = "complejo"
+
+puntosGanados obstaculo tiro 	| fst obstaculo tiro && nivelDeDificultad obstaculo tiro == "facil" = 50
+								| fst obstaculo tiro && nivelDeDificultad obstaculo tiro == "medio" = 75
+								| fst obstaculo tiro && nivelDeDificultad obstaculo tiro == "complejo" = 100
+								| otherwise = 0
+
+--- Determinar el padre de quien perdio la apuesta.
+listadoDeSuperadores listaJugadores listaObstaculos = filter (puedeSuperarTodosLosObstaculos listaObstaculos) listaJugadores
+-- Aca hay una cuestion, segun el enunciado, con la lista de prueba [tunelConRampita, laguna 1, hoyo] ganaria Todd. Pero si calculamos "cuantosObstaculosSupera" para ambos, ninguno de los dos pasa mas de uno, no cumpliendo con "Un niño gana si puede superar todos los obstaculos". Si, -puede-, pero no lo hace. Aceptando esa frase, solo necesito la lista de los que PUEDEN, y despues sumar puntos.
+-- Esta funcion la armamos para calcular, en algun momento, que si supera la misma cantidad de "length(listaObstaculos)" entonces es el ganador.
+-- El caso no se da.
+-- cantidadDeObstaculos listaObstaculos jugador = cuantosObstaculosSupera (paloMasUtil jugador listaObstaculos) listaObstaculos 
+inversorPalos listaObstaculos jugador = paloMasUtil jugador listaObstaculos
+armadoDePalos listaJugadores listaObstaculos = map (inversorPalos listaObstaculos) (listadoDeSuperadores listaJugadores listaObstaculos)
+
+pierdeLaApuesta listaJugadores listaObstaculos = 0
+
+-- Punto 6
+-- funcionMrBurns :: (Num b) => (a, b -> b) -> (f -> b) -> (b -> d -> g) -> [f] -> Int
+funcionMrBurns x y z = length.flip z 12.foldl1 (snd.x).map y
+
+-- En primer lugar, sabemos que map es una función que recibe una función que aplicará a una lista, y devuelve un resultado. 
+-- De esto, sacamos dos cosas:
+-- Que "y" es una funcion que recibe un valor y retorna otro, por lo cual su tipo sera (f -> b) y que, debido a que la función está aplicando
+-- composición, funcionMrBurns recibe un parametro más después de "z", que será una lista de tipo [f].
+-- snd es una función aplicada a tuplas binarias, por tanto x es una tupla binaria (a,b).
+-- foldl1 toma una función y una lista, a la cual le aplica recursivamente la función. Por tanto, el segundo valor de la tupla "x" es una funcion.
+-- La lista generada por "map y" es la que evaluará foldl1, por tanto la funcion (snd.x) evaluará argumentos del tipo b y devolverá el mismo tipo. Por esto es que la función "y" devuelve elementos b.
+-- Flip es una función que recibe una función binaria y da vuelta el orden de sus argumentos. La función binaria z es entonces (b -> d -> g).
+-- Por ultimo, length da el tamaño de una lista, tal que devuelve un Int, que es lo que devuelve nuestra funcionMrBurns.
