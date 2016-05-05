@@ -74,7 +74,7 @@ listadoDeSuperadores listaJugadores listaObstaculos = filter (puedeSuperarTodosL
 -- Aca hay una cuestion, segun el enunciado, con la lista de prueba [tunelConRampita, laguna 1, hoyo] ganaria Todd. Pero si calculamos "cuantosObstaculosSupera" para ambos, ninguno de los dos pasa mas de uno, no cumpliendo con "Un niño gana si puede superar todos los obstaculos". Si, -puede-, pero no lo hace. Aceptando esa frase, solo necesito la lista de los que PUEDEN, y despues sumar puntos.
 -- Esta funcion la armamos para calcular, en algun momento, que si supera la misma cantidad de "length(listaObstaculos)" entonces es el ganador.
 -- El caso no se da.
--- cantidadDeObstaculos listaObstaculos jugador = cuantosObstaculosSupera (paloMasUtil jugador listaObstaculos) listaObstaculos 
+-- cantidadDeObstaculos listaObstaculos jugador = cuantosObstaculosSupera (paloMasUtil jugador listaObstaculos) listaObstaculos
 inversorPalos listaObstaculos jugador = paloMasUtil jugador listaObstaculos
 armadoDePalos listaJugadores listaObstaculos = map (inversorPalos listaObstaculos) (listadoDeSuperadores listaJugadores listaObstaculos)
 
