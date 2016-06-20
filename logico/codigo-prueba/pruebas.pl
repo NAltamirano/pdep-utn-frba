@@ -1,0 +1,1 @@
+sumaUno(X, ValorNuevo) :- ValorNuevo is X + 1.
