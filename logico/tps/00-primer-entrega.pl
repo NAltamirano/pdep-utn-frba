@@ -28,8 +28,7 @@ saleCon(X,Y) :- pareja(X,Y), X \= Y.
 saleCon(Y,X) :- pareja(X,Y), X \= Y.
 
 % 4 - Fidelidad: Realizar el predicado esFiel sabiendo que una persona es fiel cuando sale con una unica persona.
-esFiel(Persona) :- tieneMuchasParejas(Persona).
-tieneMuchasParejas(Persona) :- pareja(Persona,Pareja), not((pareja(Persona,ParejaB),Persona \= ParejaB)).
+esFiel(Persona) :- saleCon(Persona,ParejaA), forall(saleCon(Persona,ParejaB), ParejaA = ParejaB).
 
 % 5 - Acatar Ordenes: acataOrden realizacion dos personas. Una acata ordenes de otra si trbaaja para esa persona de manera directa o indirecta.
 acataOrden(Persona,Empleado) :- trabajaPara(Persona,Empleado),Persona \= Empleado. % Caso base.
