@@ -31,5 +31,5 @@ saleCon(Y,X) :- pareja(X,Y), X \= Y.
 esFiel(Persona) :- saleCon(Persona,ParejaA), forall(saleCon(Persona,ParejaB), ParejaA = ParejaB).
 
 % 5 - Acatar Ordenes: acataOrden realizacion dos personas. Una acata ordenes de otra si trbaaja para esa persona de manera directa o indirecta.
-acataOrden(Persona,Empleado) :- trabajaPara(Persona,Empleado),Persona \= Empleado. % Caso base.
-acataOrden(Persona,Empleado) :- forall(trabajaPara(Persona,Empleador),trabajaPara(Empleador,Empleado)),Persona \= Empleado. % Caso recursivo
+acatarOrden(Pers1, Pers2):- trabajaPara(Pers1, Pers2).
+acatarOrden(Pers1, Pers2):- trabajaPara(Pers1, Alguien), acatarOrden(Alguien, Pers2).
