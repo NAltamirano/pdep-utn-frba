@@ -49,9 +49,23 @@ object caraDeNaipe {
 	}
 }
 
+//// Peleas
+object peleas {
+	method luchar(atacante,atacado) {
+		atacante.atacar(atacado)
+
+		if (atacado.estarVivo()) {
+			peleas.luchar(atacado,atacante)
+		} else {
+			atacado.morir()
+			atacante.inicializar()
+		}
+	}
+}
 /////////// Punto 1 //////////////
 // Hulk
 object hulk {
+	var nombre = "Hulk"
 	var vida
 	var vidaNormal
 	var poderes = []
@@ -59,6 +73,8 @@ object hulk {
 
 	method vida() = vida
 	method vida(_vida) { vida = _vida }
+
+	method nombre()
 
 	method inicializar() {
 		self.serCalmado()
@@ -94,21 +110,63 @@ object hulk {
 	method calcularVida() {
 		return vidaNormal + poderes.size() * 100
 	}
+
+	method estarVivo() {
+		if (self.vida() > 0) { 
+			return true 
+		} else { 
+			return false
+		}
+	}
 }
 
-//// Pruebas para punto 1.a.
-hulk.serMolestado()
-hulk.serMolestado()
-hulk.vida()
-
-//// Punto 1.b 
-hulk.serCalmado()
-hulk.vida()
-
-//// Punto 1.c
-hulk.serMolestado()
-hulk.serMolestado()
-hulk.disminuirVida(10)
-hulk.vida()
-
 /////////// Punto 2 //////////////
+object magneto {
+	var nombre = "Magneto"
+	var vida
+	var casco
+	var poderes = []
+
+	method vida() = vida
+	method vida(_vida) { vida = _vida }
+
+	method nombre() = nombre
+	method nombre(_nombre) { nombre = _nombre }
+
+	method inicializar() {
+		vida = 100
+		casco = false
+	}
+	method ponerCasco() {
+		if (! casco) {
+			casco = true
+			vida *= 10
+		}
+	}
+
+	method sacarCasco() {
+		if (casco) {
+			casco = false
+			vida /= 10
+		}
+	}
+
+	method cargarPoderes() {
+		poderes.add(vuelo)
+		poderes.add(telequinesis)
+		poderes.add(objetosCortantes)
+	}
+
+	method atacar(atacado) {
+		poderes.forEach { poder => poder.usar(self,atacado) }
+		experiencia.afectar(self)
+	}
+
+	method morir() {
+		vida = 0
+	}
+
+	method estarVivo() {
+		if (self.vida() > 0) return true else return false
+	}
+}

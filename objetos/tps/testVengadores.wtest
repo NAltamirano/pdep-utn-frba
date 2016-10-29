@@ -1,0 +1,45 @@
+import 01-tp-objetos.*
+
+test "1.a molestar a Hulk dos veces" {
+	//// Pruebas para punto 1.a.
+	hulk.inicializar()
+	hulk.serMolestado()
+	hulk.serMolestado()
+	hulk.vida()	
+}
+test "1.b calmarlo y averiguar la vida" {
+	//// Punto 1.b 
+	hulk.serCalmado()
+	hulk.vida()	
+}
+
+test "1.c molestarlo dos veces y disminuir su vida" {
+	//// Punto 1.c
+	hulk.serMolestado()
+	hulk.serMolestado()
+	hulk.disminuirVida(10)
+	hulk.vida()
+}
+
+test "2. iniciar a magneto y atacar a Hulk calmado" {
+	magneto.inicializar()
+	magneto.ponerCasco()
+	hulk.serCalmado()	
+
+	peleas.luchar(magneto,hulk)
+}
+
+test "3. reinicializarlos y cambiar el resultado" {
+	// Inicializo a Magneto y no le pongo el casco, vida = 100
+	magneto.inicializar()
+	
+	// Inicializo a Hulk y lo molesto. Magneto hace 80 de daño, asi que debo enojarlo mas de 3 veces.
+	hulk.inicializar()
+	hulk.serMolestado()
+	hulk.serMolestado()
+	hulk.serMolestado()
+	hulk.serMolestado()
+	hulk.serMolestado() // Hay que molestarlo una vez más, porque sino siente culpa y muere.
+
+	peleas.luchar(magneto,hulk)
+}
