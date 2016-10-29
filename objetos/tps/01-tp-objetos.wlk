@@ -2,39 +2,39 @@
 // Poderes
 object fuerza {
 	method usar(atacante,atacado) {
-		atacado.vida() -= 40
+		atacado.vida(atacado.vida()- 40)
 	}
 }
 
 object vuelo {
 	method usar(atacante,atacado) {
-		atacante.vida() += 20
+		atacante.vida(atacante.vida() + 20)
 	}
 }
 
 object telequinesis {
 	method usar(atacante,atacado) {
-		atacado.vida() -= 50
-		atacante.vida() -= 1
+		atacado.vida(atacado.vida() - 50)
+		atacado.vida(atacante.vida() - 1)
 	}
 }
 
 object objetosCortantes {
 	method usar(atacante,atacado) {
-		atacado.vida() -= 30
+		atacado.vida(atacado.vida() - 30)
 	}
 }
 //// Lo mismo con las reacciones
 // Reacciones
 object culpa {
 	method afectar(heroe) {
-		heroe.vida() -= 5
+		heroe.vida(heroe.vida() - 5)
 	}
 }
 
 object experiencia {
 	method afectar(heroe) {
-		heroe.vida() += 10
+		heroe.vida(heroe.vida() + 10)
 	}
 }
 
